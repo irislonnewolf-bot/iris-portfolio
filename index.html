@@ -203,6 +203,9 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .node-label{margin-top:14px;text-align:center;padding:0 4px}
 .node-co{font-size:12px;font-weight:700;color:var(--wd);margin-bottom:3px;line-height:1.3}
 .node-role-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;background:var(--lv-l);color:#6B4EA8;font-weight:600;margin-bottom:3px}
+.c-node-h[data-id="c1"] .node-role-badge{background:rgba(91,126,187,.18);color:#3A5E8E}
+.c-node-h[data-id="c2"] .node-role-badge{background:rgba(90,176,154,.18);color:#2A7A66}
+.c-node-h[data-id="c3"] .node-role-badge{background:rgba(155,101,204,.18);color:#6B3E9A}
 .node-period{font-size:10px;color:var(--wl)}
 
 /* detail card below map */
@@ -446,7 +449,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 
   <div class="cv-body">
     <div class="cv-photo-ring">
-      <img src="照片/personal4.jpg" alt="杨云虹" class="cv-photo" onerror="this.src='照片/avatar.jpg'">
+      <img src="照片/personal4.webp" alt="杨云虹" class="cv-photo" onerror="this.src='照片/avatar.webp'">
       <div class="ring-orbit"></div>
     </div>
     <div class="cv-txt">
@@ -612,7 +615,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 
         <!-- LV2 帕皮 -->
         <div class="c-node-h" data-id="c2" onclick="selectCareer(this)">
-          <div class="c-planet lv2">🌱<span class="lv-badge">⭐⭐</span></div>
+          <div class="c-planet lv2">🤖<span class="lv-badge">⭐⭐</span></div>
           <div class="c-arrow">›</div>
           <div class="node-label">
             <div class="node-co">北京帕皮</div>
@@ -670,7 +673,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="proj-card rv" style="transition-delay:.05s">
         <div class="proj-card-inner">
           <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-steam-1.png','Steam机器人工程课程')">
-            <img src="项目截图/project-steam-1.png" alt="Steam机器人课程" class="proj-img" loading="lazy">
+            <img src="项目截图/project-steam-1.webp" alt="Steam机器人课程" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">🤖</span>EXHIBIT 01</span>
             <span class="zoom-hint">🔍 点击放大</span>
           </div>
@@ -686,7 +689,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="proj-card rv" style="transition-delay:.1s">
         <div class="proj-card-inner">
           <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-multippt-1.png','中小学AI多模态数字课件')">
-            <img src="项目截图/project-multippt-1.png" alt="中小学AI多模态数字课件"
+            <img src="项目截图/project-multippt-1.webp" alt="中小学AI多模态数字课件"
                  class="proj-img" loading="lazy"
                  onerror="this.parentElement.style.background='linear-gradient(135deg,#6B4EA8,#A8D8C8)';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div style=\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:6px\'><span style=\'font-size:38px\'>🧠</span><span style=\'color:rgba(255,255,255,.7);font-size:11px\'>图片待补充</span></div>')">
             <span class="proj-num"><span class="proj-num-icon">🧠</span>EXHIBIT 02</span>
@@ -706,7 +709,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="proj-card rv" style="transition-delay:.15s">
         <div class="proj-card-inner">
           <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-textbook-1.png','省级信息科技教材编写')">
-            <img src="项目截图/project-textbook-1.png" alt="省级教材" class="proj-img" loading="lazy">
+            <img src="项目截图/project-textbook-1.webp" alt="省级教材" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">📘</span>EXHIBIT 03</span>
             <span class="zoom-hint">🔍 点击放大</span>
           </div>
@@ -722,7 +725,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="proj-card rv" style="transition-delay:.2s">
         <div class="proj-card-inner">
           <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-lvmi-1.png','绿米智能家居硬件课程')">
-            <img src="项目截图/project-lvmi-1.png" alt="绿米课程" class="proj-img" loading="lazy">
+            <img src="项目截图/project-lvmi-1.webp" alt="绿米课程" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">🏠</span>EXHIBIT 04</span>
             <span class="zoom-hint">🔍 点击放大</span>
           </div>
@@ -738,7 +741,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="proj-card rv" style="transition-delay:.25s">
         <div class="proj-card-inner">
           <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-aigc-workflow-1.png','AIGC内容生产工作流')">
-            <img src="项目截图/project-aigc-workflow-1.png" alt="AIGC工作流" class="proj-img" loading="lazy">
+            <img src="项目截图/project-aigc-workflow-1.webp" alt="AIGC工作流" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">⚡</span>EXHIBIT 05</span>
             <span class="zoom-hint">🔍 点击放大</span>
           </div>
@@ -754,7 +757,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="proj-card rv" style="transition-delay:.3s">
         <div class="proj-card-inner">
           <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-framework-1.png','课程产品框架设计')">
-            <img src="项目截图/project-framework-1.png" alt="课程产品框架设计" class="proj-img" loading="lazy">
+            <img src="项目截图/project-framework-1.webp" alt="课程产品框架设计" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">🗂️</span>EXHIBIT 06</span>
             <span class="zoom-hint">🔍 点击放大</span>
           </div>
@@ -826,9 +829,9 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     <p class="polar-hint rv">镜头后的她 · 热爱探索、充满好奇<br>
       <span style="font-size:12px">Hover 一下，让拍立得飞起来 ✨</span></p>
     <div class="polar-stage rv">
-      <div class="polar"><img src="照片/personal1.jpg" alt="探索中的她" loading="lazy"><div class="polar-cap">探索中的她 🌍</div></div>
-      <div class="polar"><img src="照片/personal2.jpg" alt="创作时刻" loading="lazy"><div class="polar-cap">创作时刻 ✨</div></div>
-      <div class="polar"><img src="照片/personal3.jpg" alt="与自然对话" loading="lazy"><div class="polar-cap">与自然对话 🌿</div></div>
+      <div class="polar"><img src="照片/personal1.webp" alt="探索中的她" loading="lazy"><div class="polar-cap">探索中的她 🌍</div></div>
+      <div class="polar"><img src="照片/personal2.webp" alt="创作时刻" loading="lazy"><div class="polar-cap">创作时刻 ✨</div></div>
+      <div class="polar"><img src="照片/personal3.webp" alt="与自然对话" loading="lazy"><div class="polar-cap">与自然对话 🌿</div></div>
     </div>
     <div class="life-quote rv">"用科技点亮童心，以创意丈量未来 🚀"</div>
   </div>
