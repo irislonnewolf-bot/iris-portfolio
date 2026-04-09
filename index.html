@@ -410,7 +410,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     </div>
     <button class="tn-bgm" onclick="toggleBGM(this)" id="bgmBtn">
       <span class="bgm-note" id="bgmNote">♪</span>
-      <span id="bgmLabel">播放BGM</span>
+      <span id="bgmLabel">来首小曲儿</span>
     </button>
   </div>
 </nav>
@@ -917,10 +917,10 @@ ndDots.forEach((d,i)=>d.addEventListener('click',()=>scrollSec(secIds[i])));
 const bgm=document.getElementById('bgm');
 let bgmPlaying=false;
 function toggleBGM(btn){
-  if(bgmPlaying){ bgm.pause(); bgmPlaying=false; document.getElementById('bgmLabel').textContent='播放BGM'; document.getElementById('bgmNote').classList.remove('play'); }
+  if(bgmPlaying){ bgm.pause(); bgmPlaying=false; document.getElementById('bgmLabel').textContent='来首小曲儿'; document.getElementById('bgmNote').classList.remove('play'); }
   else{ bgm.play().then(()=>{ bgmPlaying=true; document.getElementById('bgmLabel').textContent='暂停BGM'; document.getElementById('bgmNote').classList.add('play'); }).catch(()=>showToast('浏览器需要用户操作后才能播放音频')); }
 }
-bgm.addEventListener('ended',()=>{ bgmPlaying=false; document.getElementById('bgmLabel').textContent='播放BGM'; document.getElementById('bgmNote').classList.remove('play'); });
+bgm.addEventListener('ended',()=>{ bgmPlaying=false; document.getElementById('bgmLabel').textContent='来首小曲儿'; document.getElementById('bgmNote').classList.remove('play'); });
 
 /* ══ LIGHTBOX ══ */
 const lb=document.getElementById('lightbox');
