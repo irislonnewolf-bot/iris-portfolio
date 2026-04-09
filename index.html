@@ -672,7 +672,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 01 Steam -->
       <div class="proj-card rv" style="transition-delay:.05s">
         <div class="proj-card-inner">
-          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-steam-1.png','Steam机器人工程课程')">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-steam-1.webp','Steam机器人工程课程')">
             <img src="项目截图/project-steam-1.webp" alt="Steam机器人课程" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">🤖</span>EXHIBIT 01</span>
             <span class="zoom-hint">🔍 点击放大</span>
@@ -688,7 +688,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 02 AI课件 -->
       <div class="proj-card rv" style="transition-delay:.1s">
         <div class="proj-card-inner">
-          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-multippt-1.png','中小学AI多模态数字课件')">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-multippt-1.webp','中小学AI多模态数字课件')">
             <img src="项目截图/project-multippt-1.webp" alt="中小学AI多模态数字课件"
                  class="proj-img" loading="lazy"
                  onerror="this.parentElement.style.background='linear-gradient(135deg,#6B4EA8,#A8D8C8)';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div style=\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:6px\'><span style=\'font-size:38px\'>🧠</span><span style=\'color:rgba(255,255,255,.7);font-size:11px\'>图片待补充</span></div>')">
@@ -708,7 +708,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 03 教材 -->
       <div class="proj-card rv" style="transition-delay:.15s">
         <div class="proj-card-inner">
-          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-textbook-1.png','省级信息科技教材编写')">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-textbook-1.webp','省级信息科技教材编写')">
             <img src="项目截图/project-textbook-1.webp" alt="省级教材" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">📘</span>EXHIBIT 03</span>
             <span class="zoom-hint">🔍 点击放大</span>
@@ -724,7 +724,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 04 绿米 -->
       <div class="proj-card rv" style="transition-delay:.2s">
         <div class="proj-card-inner">
-          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-lvmi-1.png','绿米智能家居硬件课程')">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-lvmi-1.webp','绿米智能家居硬件课程')">
             <img src="项目截图/project-lvmi-1.webp" alt="绿米课程" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">🏠</span>EXHIBIT 04</span>
             <span class="zoom-hint">🔍 点击放大</span>
@@ -740,7 +740,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 05 AIGC工作流 -->
       <div class="proj-card rv" style="transition-delay:.25s">
         <div class="proj-card-inner">
-          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-aigc-workflow-1.png','AIGC内容生产工作流')">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-aigc-workflow-1.webp','AIGC内容生产工作流')">
             <img src="项目截图/project-aigc-workflow-1.webp" alt="AIGC工作流" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">⚡</span>EXHIBIT 05</span>
             <span class="zoom-hint">🔍 点击放大</span>
@@ -756,7 +756,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 06 课程产品框架设计 -->
       <div class="proj-card rv" style="transition-delay:.3s">
         <div class="proj-card-inner">
-          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-framework-1.png','课程产品框架设计')">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-framework-1.webp','课程产品框架设计')">
             <img src="项目截图/project-framework-1.webp" alt="课程产品框架设计" class="proj-img" loading="lazy">
             <span class="proj-num"><span class="proj-num-icon">🗂️</span>EXHIBIT 06</span>
             <span class="zoom-hint">🔍 点击放大</span>
@@ -962,7 +962,7 @@ const PAGES=Math.ceil(CAR_TOTAL/CAR_PAGE);
 let carIdx=0, carTimer=null;
 const carTrack=document.getElementById('carTrack');
 const carDotsEl=document.getElementById('carDots');
-for(let i=1;i<=CAR_TOTAL;i++){const d=document.createElement('div');d.className='car-item';d.innerHTML=`<img src="AIGCPHOTO/${i}.jpg" alt="AIGC ${i}" loading="lazy">`;carTrack.appendChild(d);}
+for(let i=1;i<=CAR_TOTAL;i++){const d=document.createElement('div');d.className='car-item';d.innerHTML=`<img src="AIGCPHOTO/${i}.webp" alt="AIGC ${i}" loading="lazy">`;carTrack.appendChild(d);}
 for(let i=0;i<PAGES;i++){const d=document.createElement('div');d.className='car-dot'+(i===0?' on':'');d.addEventListener('click',()=>carGoPage(i));carDotsEl.appendChild(d);}
 function carGoPage(p){carIdx=Math.min(p*CAR_PAGE,CAR_TOTAL-CAR_PAGE);carTrack.style.transform=`translateX(-${carIdx*CAR_W}px)`;document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('on',i===p));}
 function carMove(dir){clearInterval(carTimer);let p=Math.round(carIdx/CAR_PAGE)+dir;if(p>=PAGES)p=0;if(p<0)p=PAGES-1;carGoPage(p);startCarTimer();}
