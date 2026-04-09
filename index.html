@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>杨云虹 · AI教育内容产品专家</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ════ ROOT ════ */
+:root{
+  --lv:#C8A8E9; --lv-l:#EBD9FF;
+  --mt:#A8D8C8; --mt-l:#D5F0E8;
+  --pc:#FFB7A5; --pc-l:#FFE4DC;
+  --gd:#FFD580; --gd-l:#FFF3C4;
+  --cr:#FFF8F2;
+  --wd:#3D2B1F; --wm:#7A5C4E; --wl:#B8978A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:54px}
+body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--cr);color:var(--wd);overflow-x:hidden}
+
+/* ════ TOP NAV ════ */
+#topNav{
+  position:fixed;top:0;left:0;right:0;z-index:998;
+  height:54px;
+  background:rgba(13,10,40,.72);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(200,168,233,.18);
+  transition:background .4s,border-color .4s;
+}
+#topNav.light{
+  background:rgba(255,248,242,.92);
+  border-bottom-color:rgba(200,168,233,.25);
+}
+.tn-inner{
+  max-width:980px;margin:0 auto;padding:0 40px;
+  height:100%;display:flex;align-items:center;gap:20px;
+}
+.tn-logo{font-size:15px;font-weight:900;color:rgba(255,255,255,.9);flex-shrink:0;letter-spacing:.5px}
+#topNav.light .tn-logo{color:var(--wd)}
+.tn-links{display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap}
+.tn-btn{
+  padding:5px 14px;border:none;border-radius:16px;font-size:12px;font-weight:500;
+  cursor:pointer;background:transparent;color:rgba(255,255,255,.65);
+  transition:all .2s;font-family:inherit;white-space:nowrap;
+}
+.tn-btn:hover,.tn-btn.active{background:rgba(200,168,233,.28);color:#fff}
+#topNav.light .tn-btn{color:var(--wm)}
+#topNav.light .tn-btn:hover,
+#topNav.light .tn-btn.active{background:var(--lv-l);color:#6B4EA8}
+/* BGM toggle in nav */
+.tn-bgm{
+  flex-shrink:0;display:flex;align-items:center;gap:6px;
+  padding:5px 14px;border:1px solid rgba(200,168,233,.35);border-radius:16px;
+  background:transparent;color:rgba(255,255,255,.75);font-size:12px;font-weight:500;
+  cursor:pointer;transition:all .25s;font-family:inherit;
+}
+.tn-bgm:hover{background:rgba(200,168,233,.25);color:#fff}
+#topNav.light .tn-bgm{border-color:rgba(200,168,233,.5);color:var(--wm)}
+#topNav.light .tn-bgm:hover{background:var(--lv-l);color:#6B4EA8}
+.bgm-note{width:14px;height:14px;display:inline-block;animation:noteFloat 1s ease-in-out infinite;opacity:0;font-size:14px}
+.bgm-note.play{opacity:1}
+@keyframes noteFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* ════ NAV DOTS ════ */
+#navDots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:997;display:flex;flex-direction:column;gap:10px}
+.nd{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.55);cursor:pointer;transition:all .3s;backdrop-filter:blur(4px)}
+.nd.on{background:var(--lv);border-color:var(--lv);transform:scale(1.5)}
+@media(max-width:700px){#navDots{display:none}}
+
+/* ════ TOAST ════ */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(61,43,31,.92);color:#fff;padding:10px 22px;border-radius:24px;font-size:13px;z-index:9999;transition:transform .35s ease;backdrop-filter:blur(10px);pointer-events:none;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ════ LIGHTBOX ════ */
+#lightbox{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+  cursor:zoom-out;
+}
+#lightbox.open{opacity:1;pointer-events:all}
+#lb-img{
+  max-width:90vw;max-height:86vh;border-radius:12px;
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
+  transform:scale(.88);transition:transform .35s cubic-bezier(.34,1.3,.64,1);
+  object-fit:contain;
+}
+#lightbox.open #lb-img{transform:scale(1)}
+#lb-close{
+  position:absolute;top:20px;right:24px;
+  font-size:28px;color:rgba(255,255,255,.7);cursor:pointer;
+  background:none;border:none;transition:color .2s,transform .2s;line-height:1;
+}
+#lb-close:hover{color:#fff;transform:scale(1.15)}
+
+/* ════ REVEAL ════ */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+
+/* ════ SECTION SHELL ════ */
+.sec-wrap{max-width:980px;margin:0 auto;padding:80px 40px}
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:48px}
+.sec-head h2{font-size:30px;font-weight:800;color:var(--wd);white-space:nowrap}
+.sec-head h2 span{background:linear-gradient(135deg,var(--lv),var(--mt));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sec-line{flex:1;height:2px;background:linear-gradient(90deg,var(--lv-l),transparent);border-radius:2px;min-width:20px}
+
+/* ════════════════════════════════
+   §1  COVER
+════════════════════════════════ */
+#s-cover{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 20% 50%,#1f0a3e 0%,#0d1b3e 45%,#071428 100%)}
+#cvCanvas{position:absolute;inset:0;width:100%;height:100%}
+.deco{position:absolute;animation:decoFloat var(--dur,4s) ease-in-out infinite var(--delay,0s);opacity:.3;font-size:var(--sz,22px);pointer-events:none;z-index:2;user-select:none}
+@keyframes decoFloat{0%,100%{transform:translateY(0) rotate(var(--r0,-5deg))}50%{transform:translateY(-16px) rotate(var(--r1,5deg))}}
+.cv-body{position:relative;z-index:10;display:flex;align-items:center;gap:56px;padding:80px 40px 40px;max-width:940px;width:100%}
+.cv-photo-ring{flex-shrink:0;position:relative;width:200px;height:200px}
+.cv-photo{width:200px;height:200px;border-radius:50%;object-fit:cover;object-position:top center;border:4px solid rgba(200,168,233,.7);box-shadow:0 0 32px rgba(200,168,233,.45),0 0 72px rgba(200,168,233,.15);animation:phFloat 3.5s ease-in-out infinite}
+@keyframes phFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ring-orbit{position:absolute;top:-14px;left:-14px;right:-14px;bottom:-14px;border-radius:50%;border:1.5px dashed rgba(200,168,233,.35);animation:orbitSpin 13s linear infinite}
+.ring-orbit::before{content:'⭐';position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:13px}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+.cv-txt{color:#fff;flex:1}
+.cv-name{font-size:54px;font-weight:900;background:linear-gradient(135deg,#fff 0%,#e5d4ff 50%,#ffd580 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;line-height:1.1}
+.cv-subtitle{font-size:13.5px;color:rgba(200,168,233,.85);letter-spacing:2.5px;margin-bottom:22px}
+.cv-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.cv-tag{padding:5px 15px;border-radius:20px;font-size:12px;font-weight:500;opacity:0;animation:tagPop .5s ease forwards;border:1px solid}
+.cv-tag:nth-child(1){background:rgba(200,168,233,.18);border-color:rgba(200,168,233,.5);animation-delay:.7s}
+.cv-tag:nth-child(2){background:rgba(168,216,200,.18);border-color:rgba(168,216,200,.5);animation-delay:.95s}
+.cv-tag:nth-child(3){background:rgba(255,183,165,.18);border-color:rgba(255,183,165,.5);animation-delay:1.2s}
+.cv-tag:nth-child(4){background:rgba(255,213,128,.18);border-color:rgba(255,213,128,.5);animation-delay:1.45s}
+@keyframes tagPop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.cv-summary{font-size:13px;color:rgba(255,255,255,.65);line-height:1.95;max-width:400px;margin-bottom:24px}
+.scroll-down{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.32);font-size:11px;letter-spacing:1px;display:flex;flex-direction:column;align-items:center;gap:4px;animation:sDown 2s ease-in-out infinite}
+@keyframes sDown{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* ════════════════════════════════
+   §2  SKILLS
+════════════════════════════════ */
+#s-skills{background:linear-gradient(180deg,#0d1b3e 0%,#f0e6ff 9%)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(278px,1fr));gap:22px}
+.sk-card{background:#fff;border-radius:22px;padding:30px 24px;position:relative;overflow:hidden;box-shadow:0 3px 18px rgba(200,168,233,.13),0 1px 0 rgba(200,168,233,.22) inset;transition:transform .3s,box-shadow .3s;cursor:default}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:22px 22px 0 0}
+.sk-card:nth-child(1)::before{background:linear-gradient(90deg,var(--lv),var(--pc))}
+.sk-card:nth-child(2)::before{background:linear-gradient(90deg,var(--mt),var(--lv))}
+.sk-card:nth-child(3)::before{background:linear-gradient(90deg,var(--pc),var(--gd))}
+.sk-card:hover{transform:translateY(-7px);box-shadow:0 14px 40px rgba(200,168,233,.22)}
+.sk-card::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='4' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='%23000' fill-opacity='.018'/%3E%3C/svg%3E");pointer-events:none;border-radius:22px}
+.sk-icon{font-size:38px;margin-bottom:14px;display:block}
+.sk-title{font-size:17px;font-weight:700;color:var(--wd);margin-bottom:10px}
+.sk-desc{font-size:12.5px;color:var(--wm);line-height:1.85;margin-bottom:14px}
+.sk-tags{display:flex;flex-wrap:wrap;gap:5px}
+.sk-pill{padding:3px 11px;border-radius:10px;font-size:11px;font-weight:500}
+.sk-card:nth-child(1) .sk-pill{background:var(--lv-l);color:#6B4EA8}
+.sk-card:nth-child(2) .sk-pill{background:var(--mt-l);color:#3A8B72}
+.sk-card:nth-child(3) .sk-pill{background:var(--pc-l);color:#C05840}
+
+/* ════════════════════════════════
+   §3  CAREER – HORIZONTAL MAP
+════════════════════════════════ */
+#s-career{background:linear-gradient(180deg,#f0e6ff 0%,#e4f5ef 100%)}
+.career-hint{text-align:center;color:var(--wl);font-size:12.5px;margin-bottom:36px;letter-spacing:.5px}
+
+/* scrollable track */
+.career-scroll{overflow-x:auto;padding-bottom:12px;margin:0 -8px;padding:0 8px 12px}
+.career-scroll::-webkit-scrollbar{height:4px}
+.career-scroll::-webkit-scrollbar-track{background:rgba(200,168,233,.1);border-radius:2px}
+.career-scroll::-webkit-scrollbar-thumb{background:var(--lv-l);border-radius:2px}
+
+.career-map{display:flex;align-items:flex-start;min-width:860px;position:relative;padding:10px 20px 0}
+
+/* horizontal path – replaced by inline SVG */
+.career-map::before{display:none}
+
+/* SVG rising-star path */
+.career-path-svg{
+  position:absolute;top:-30px;left:0;width:100%;height:180px;
+  pointer-events:none;z-index:0;overflow:visible;
+}
+
+/* each node */
+.c-node-h{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  position:relative;z-index:1;cursor:pointer;
+}
+
+/* planet */
+.c-planet{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:3px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.12);transition:transform .3s,box-shadow .35s;position:relative;flex-shrink:0}
+.c-planet.lv1{background:linear-gradient(135deg,#7B9ED0,#5B7EBB)}
+.c-planet.lv2{background:linear-gradient(135deg,#7FC8B4,#5AB09A)}
+.c-planet.lv3{background:linear-gradient(135deg,#B88ADE,#9B65CC)}
+.c-planet.lv4{background:linear-gradient(135deg,#FFCA50,#F5A820)}
+.c-node-h.active .c-planet,.c-node-h:hover .c-planet{transform:scale(1.15);box-shadow:0 0 0 5px rgba(200,168,233,.35),0 6px 24px rgba(0,0,0,.18)}
+.lv-badge{position:absolute;top:-8px;right:-8px;background:#fff;border-radius:10px;padding:2px 5px;font-size:9px;line-height:1.2;color:var(--wm);border:1px solid var(--wl);white-space:nowrap;letter-spacing:-1px}
+
+/* connector arrow between nodes */
+.c-arrow{
+  position:absolute;right:-16px;top:26px;
+  font-size:16px;color:rgba(200,168,233,.7);z-index:2;pointer-events:none;
+}
+
+/* node label */
+.node-label{margin-top:14px;text-align:center;padding:0 4px}
+.node-co{font-size:12px;font-weight:700;color:var(--wd);margin-bottom:3px;line-height:1.3}
+.node-role-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;background:var(--lv-l);color:#6B4EA8;font-weight:600;margin-bottom:3px}
+.node-period{font-size:10px;color:var(--wl)}
+
+/* detail card below map */
+.career-detail{
+  background:#fff;border-radius:20px;padding:24px 28px;
+  margin-top:28px;
+  box-shadow:0 4px 24px rgba(0,0,0,.07);
+  min-height:160px;
+  transition:opacity .3s ease;
+  position:relative;
+}
+.career-detail::before{
+  content:'';position:absolute;top:-10px;left:var(--arrow-left,50%);transform:translateX(-50%);
+  border:10px solid transparent;border-bottom-color:#fff;
+  transition:left .4s ease;
+}
+.cd-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.cd-co{font-size:16px;font-weight:800;color:var(--wd)}
+.cd-role{font-size:12px;padding:3px 11px;border-radius:9px;background:var(--lv-l);color:#6B4EA8;font-weight:600}
+.cd-period{font-size:11px;color:var(--wl)}
+.cd-items{display:flex;flex-direction:column;gap:7px}
+.cd-item{display:flex;gap:6px;font-size:12.5px;color:var(--wm);line-height:1.72}
+.cd-item::before{content:'▸';color:var(--lv);flex-shrink:0;margin-top:2px}
+
+/* ════════════════════════════════
+   §4  PROJECTS
+════════════════════════════════ */
+#s-projects{background:linear-gradient(180deg,#e4f5ef 0%,#fdf4ec 100%)}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:22px}
+
+/* ── micro-3D floating card ── */
+.proj-card{
+  background:#fffdf9;border-radius:22px;overflow:visible;position:relative;
+  box-shadow:
+    0 2px 0 0 rgba(200,168,233,.25),       /* top highlight */
+    0 6px 18px rgba(180,140,100,.1),
+    0 0 0 1px rgba(200,160,100,.06);
+  transition:transform .35s cubic-bezier(.34,1.2,.64,1),box-shadow .35s ease;
+  transform:perspective(900px) rotateX(1.5deg);
+  /* clip children for rounded corners */
+}
+/* inner clip wrapper keeps overflow hidden while outer shows shadow */
+.proj-card-inner{border-radius:21px;overflow:hidden;height:100%}
+.proj-card:hover{
+  transform:perspective(900px) rotateX(0deg) translateY(-9px);
+  box-shadow:
+    0 2px 0 0 rgba(200,168,233,.3),
+    0 18px 48px rgba(180,140,100,.18),
+    0 0 0 1px rgba(200,160,100,.08),
+    0 0 28px rgba(200,168,233,.12);   /* lavender halo */
+}
+/* edge glow on hover */
+.proj-card::before{
+  content:'';position:absolute;inset:-1px;border-radius:23px;
+  background:linear-gradient(135deg,rgba(200,168,233,.22),transparent 50%,rgba(168,216,200,.14));
+  opacity:0;transition:opacity .35s;pointer-events:none;z-index:1;
+}
+.proj-card:hover::before{opacity:1}
+
+.proj-img-wrap{position:relative;height:158px;overflow:hidden;background:#f0ece6;cursor:zoom-in}
+.proj-img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.proj-card:hover .proj-img{transform:scale(1.05)}
+.zoom-hint{
+  position:absolute;bottom:8px;right:8px;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(4px);
+  font-size:10px;color:var(--wm);padding:2px 8px;border-radius:8px;
+  opacity:0;transition:opacity .2s;pointer-events:none;
+}
+.proj-img-wrap:hover .zoom-hint{opacity:1}
+
+/* exhibit badge — bottom-left with icon */
+.proj-num{
+  position:absolute;bottom:10px;left:10px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(6px);
+  font-size:9px;font-weight:700;color:var(--wm);
+  padding:3px 9px 3px 6px;border-radius:20px;
+  letter-spacing:.8px;display:flex;align-items:center;gap:4px;
+  box-shadow:0 1px 6px rgba(0,0,0,.1);border:1px solid rgba(255,255,255,.6);
+}
+.proj-num-icon{font-size:11px;line-height:1}
+
+.proj-body{padding:16px}
+.proj-name{font-size:14.5px;font-weight:700;color:var(--wd);margin-bottom:5px}
+.proj-desc{font-size:12px;color:var(--wm);line-height:1.7;margin-bottom:10px}
+.proj-links{display:flex;gap:6px;flex-wrap:wrap}
+.pj-link{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:#6B4EA8;padding:4px 11px;background:var(--lv-l);border-radius:9px;text-decoration:none;transition:background .2s,color .2s}
+.pj-link:hover{background:var(--lv);color:#fff}
+.proj-tag{font-size:10.5px;color:var(--wl)}
+
+/* ── AIGC shared banner shell ── */
+.aigc-banner{
+  margin-top:28px;background:linear-gradient(135deg,#1a0a2e,#2d126a);
+  border-radius:24px;padding:28px 28px 24px;overflow:hidden;
+}
+.aigc-banner-title{color:#fff;font-size:18px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.aigc-banner-sub{font-size:12px;color:rgba(200,168,233,.7);font-weight:400}
+
+/* Image carousel */
+.car-viewport{overflow:hidden;border-radius:12px}
+.car-track{display:flex;gap:14px;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
+.car-item{flex-shrink:0;width:190px;height:190px;border-radius:12px;overflow:hidden;cursor:pointer}
+.car-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;display:block}
+.car-item:hover img{transform:scale(1.06)}
+.car-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px}
+.car-btn{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;background:rgba(200,168,233,.25);color:#fff;font-size:15px;transition:background .2s,transform .2s;display:flex;align-items:center;justify-content:center;line-height:1}
+.car-btn:hover{background:rgba(200,168,233,.55);transform:scale(1.1)}
+.car-dots-wrap{display:flex;gap:5px}
+.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.22);transition:background .3s,transform .3s;cursor:pointer}
+.car-dot.on{background:var(--lv);transform:scale(1.35)}
+
+/* Video cards in AIGC banner */
+.video-cards{display:flex;gap:16px;flex-wrap:wrap}
+.video-card{
+  flex:1;min-width:200px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(200,168,233,.25);
+  border-radius:16px;padding:22px 20px;
+  display:flex;align-items:center;gap:16px;
+  text-decoration:none;color:#fff;
+  transition:background .25s,border-color .25s,transform .25s;cursor:pointer;
+}
+.video-card:hover{background:rgba(200,168,233,.18);border-color:var(--lv);transform:translateY(-3px)}
+.vc-icon{font-size:36px;flex-shrink:0}
+.vc-info{}
+.vc-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.vc-desc{font-size:12px;color:rgba(200,168,233,.75);line-height:1.6}
+.vc-arrow{font-size:18px;margin-left:auto;color:rgba(200,168,233,.6);flex-shrink:0}
+
+/* ════════════════════════════════
+   §5  LIFE
+════════════════════════════════ */
+#s-life{background:linear-gradient(180deg,#fdf4ec 0%,#fff2ea 100%)}
+.polar-hint{text-align:center;color:var(--wl);font-size:13px;margin-bottom:38px}
+.polar-stage{display:flex;justify-content:center;align-items:center;height:350px;position:relative;cursor:pointer}
+.polar{position:absolute;background:#fff;padding:12px 12px 46px;box-shadow:0 8px 28px rgba(0,0,0,.13);transition:transform .5s cubic-bezier(.34,1.3,.64,1)}
+.polar:nth-child(1){transform:rotate(-9deg) translate(-22px,8px);z-index:1}
+.polar:nth-child(2){transform:rotate(4deg);z-index:3}
+.polar:nth-child(3){transform:rotate(12deg) translate(22px,-8px);z-index:2}
+.polar-stage:hover .polar:nth-child(1){transform:rotate(-15deg) translateX(-220px);z-index:1}
+.polar-stage:hover .polar:nth-child(2){transform:rotate(0deg) scale(1.06);z-index:3}
+.polar-stage:hover .polar:nth-child(3){transform:rotate(15deg) translateX(220px);z-index:2}
+.polar img{width:195px;height:195px;object-fit:cover;display:block}
+.polar-cap{text-align:center;margin-top:10px;font-size:12px;color:var(--wm);font-style:italic}
+.life-quote{text-align:center;margin-top:42px;font-size:15px;color:var(--wm);line-height:1.9;font-style:italic}
+
+/* ════════════════════════════════
+   §6  CONTACT
+════════════════════════════════ */
+#s-contact{position:relative;min-height:58vh;background:radial-gradient(ellipse at 30% 50%,#1f0a3e 0%,#0d1b3e 55%,#071428 100%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+#ctCanvas{position:absolute;inset:0;width:100%;height:100%}
+.ct-body{position:relative;z-index:10;text-align:center;padding:60px 40px;width:100%}
+.ct-rocket{font-size:54px;display:block;margin-bottom:14px;animation:rocketFloat 2.5s ease-in-out infinite}
+@keyframes rocketFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-14px) rotate(8deg)}}
+.ct-title{font-size:30px;font-weight:800;margin-bottom:6px;background:linear-gradient(135deg,#fff,#e8d5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ct-sub{font-size:13.5px;color:rgba(255,255,255,.5);margin-bottom:38px}
+.ct-cards{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;max-width:680px;margin:0 auto}
+.ct-card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:22px 28px;min-width:170px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .3s;text-decoration:none;color:#fff}
+.ct-card:hover{background:rgba(200,168,233,.18);border-color:var(--lv);transform:translateY(-4px)}
+.ct-ci{font-size:26px}
+.ct-label{font-size:11px;color:rgba(255,255,255,.42)}
+.ct-val{font-size:14.5px;font-weight:600;text-align:center}
+.ct-hint{font-size:10px;color:rgba(255,255,255,.28)}
+.ct-footer{margin-top:40px;font-size:11px;color:rgba(255,255,255,.22)}
+
+/* ════ RESPONSIVE ════ */
+@media(max-width:700px){
+  .tn-inner{padding:0 16px;gap:10px}
+  .tn-logo{font-size:13px}
+  .tn-btn{font-size:11px;padding:4px 10px}
+  .cv-body{flex-direction:column;text-align:center;gap:28px;padding:80px 20px 40px}
+  .cv-tags{justify-content:center}
+  .cv-name{font-size:40px}
+  .cv-summary{margin:0 auto 20px}
+  .sec-wrap{padding:60px 20px}
+  .polar-stage{height:290px}
+  .polar img{width:155px;height:155px}
+  .polar{padding:10px 10px 40px}
+  .polar-stage:hover .polar:nth-child(1){transform:rotate(-13deg) translateX(-165px)}
+  .polar-stage:hover .polar:nth-child(3){transform:rotate(13deg) translateX(165px)}
+  .ct-cards{flex-direction:column;align-items:center}
+  .proj-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .video-cards{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ── BGM ── -->
+<audio id="bgm" src="bgm.mp3" loop preload="none"></audio>
+
+<!-- ── Top Nav ── -->
+<nav id="topNav">
+  <div class="tn-inner">
+    <span class="tn-logo">杨云虹</span>
+    <div class="tn-links">
+      <button class="tn-btn active" onclick="scrollSec('s-cover')">认识一下</button>
+      <button class="tn-btn" onclick="scrollSec('s-skills')">专业技能</button>
+      <button class="tn-btn" onclick="scrollSec('s-career')">职场足迹</button>
+      <button class="tn-btn" onclick="scrollSec('s-projects')">作品集锦</button>
+      <button class="tn-btn" onclick="scrollSec('s-life')">生活侧写</button>
+      <button class="tn-btn" onclick="scrollSec('s-contact')">联系合作</button>
+    </div>
+    <button class="tn-bgm" onclick="toggleBGM(this)" id="bgmBtn">
+      <span class="bgm-note" id="bgmNote">♪</span>
+      <span id="bgmLabel">播放BGM</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Nav Dots ── -->
+<nav id="navDots">
+  <div class="nd on"  data-sec="s-cover"></div>
+  <div class="nd"     data-sec="s-skills"></div>
+  <div class="nd"     data-sec="s-career"></div>
+  <div class="nd"     data-sec="s-projects"></div>
+  <div class="nd"     data-sec="s-life"></div>
+  <div class="nd"     data-sec="s-contact"></div>
+</nav>
+
+<!-- ── Lightbox ── -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lb-close" onclick="closeLightbox()" aria-label="关闭">✕</button>
+  <img id="lb-img" src="" alt="放大预览">
+</div>
+
+<!-- ── Toast ── -->
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     §1  COVER
+══════════════════════════════════════════ -->
+<section id="s-cover">
+  <canvas id="cvCanvas"></canvas>
+  <div class="deco" style="top:13%;left:6.5%;--sz:28px;--dur:4.2s;--delay:0s;--r0:-6deg;--r1:6deg">🤖</div>
+  <div class="deco" style="top:21%;right:8.5%;--sz:17px;--dur:3.8s;--delay:.6s;--r0:-3deg;--r1:3deg">⭐</div>
+  <div class="deco" style="bottom:26%;left:9%;--sz:21px;--dur:5s;--delay:.3s;--r0:-8deg;--r1:4deg">🌟</div>
+  <div class="deco" style="bottom:19%;right:7%;--sz:25px;--dur:4s;--delay:1.2s;--r0:-4deg;--r1:8deg">🚀</div>
+  <div class="deco" style="top:54%;right:4%;--sz:15px;--dur:3.5s;--delay:.9s;--r0:0deg;--r1:5deg">💫</div>
+  <div class="deco" style="top:37%;left:3.5%;--sz:13px;--dur:4.5s;--delay:1.6s;--r0:-5deg;--r1:5deg">✨</div>
+  <div class="deco" style="top:70%;left:15%;--sz:18px;--dur:4.8s;--delay:.4s;--r0:-3deg;--r1:7deg">🪐</div>
+
+  <div class="cv-body">
+    <div class="cv-photo-ring">
+      <img src="照片/personal4.jpg" alt="杨云虹" class="cv-photo" onerror="this.src='照片/avatar.jpg'">
+      <div class="ring-orbit"></div>
+    </div>
+    <div class="cv-txt">
+      <div class="cv-name">杨云虹</div>
+      <div class="cv-subtitle">AI 教育内容产品 · 教研主管</div>
+      <div class="cv-tags">
+        <span class="cv-tag">🎓 9年K12科技教育</span>
+        <span class="cv-tag">🤖 AIGC工具达人</span>
+        <span class="cv-tag">📚 20套+课程研发</span>
+        <span class="cv-tag">🏆 2w+教师培训</span>
+      </div>
+      <p class="cv-summary">
+        专注3—12岁孩子科技启蒙，擅长将复杂技术<br>
+        转化为高互动、趣味性的学习体验。<br>
+        主导Steam&amp;AI课程研发 · 省市合编教材10册+<br>
+        精通AIGC工具，能独立搭建智能化内容生产工作流。
+      </p>
+    </div>
+  </div>
+  <div class="scroll-down">向下探索 ↓</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     §2  SKILLS
+══════════════════════════════════════════ -->
+<section id="s-skills">
+  <div class="sec-wrap">
+    <div class="sec-head rv">
+      <span style="font-size:32px">🎯</span>
+      <h2>专业<span>技能</span></h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="sk-card rv" style="transition-delay:.08s">
+        <span class="sk-icon">🎨</span>
+        <div class="sk-title">多模态内容创作</div>
+        <p class="sk-desc">精通 PPT、剪映等视听内容生产工具；擅长儿童、青少年故事化脚本编排，角色对话交互设计与动态视觉呈现；能高效输出覆盖网页、可计算文档、硬件模型、编码、智能体等多模态的教学内容资产。</p>
+        <div class="sk-tags">
+          <span class="sk-pill">PPT制作</span><span class="sk-pill">剪映剪辑</span>
+          <span class="sk-pill">故事化脚本</span><span class="sk-pill">动态视觉</span><span class="sk-pill">多模态输出</span>
+        </div>
+      </div>
+      <div class="sk-card rv" style="transition-delay:.18s">
+        <span class="sk-icon">🤖</span>
+        <div class="sk-title">AIGC 工具应用</div>
+        <p class="sk-desc">深度接入工作流的 AIGC 工具：视频生成（Sora、Veo、Seedance）、图像生成（Nanobanana、Lovart）、大语言模型（GPT、Gemini、Claude等）；具备优秀的AI提示词工程与可计算文档构建能力，能独立构建内容生产工作流。</p>
+        <div class="sk-tags">
+          <span class="sk-pill">Sora / Veo</span><span class="sk-pill">GPT / Claude</span>
+          <span class="sk-pill">提示词工程</span><span class="sk-pill">AI工作流</span><span class="sk-pill">图像生成</span>
+        </div>
+      </div>
+      <div class="sk-card rv" style="transition-delay:.28s">
+        <span class="sk-icon">📊</span>
+        <div class="sk-title">数据驱动与业务协同</div>
+        <p class="sk-desc">具备优秀的用户同理心与定性访谈能力，熟练使用 Excel、Xmind 等结构化与数据分析工具。具备良好的英语读写能力，能无障碍追踪海外前沿教育科技与AI产品动态。</p>
+        <div class="sk-tags">
+          <span class="sk-pill">用户调研</span><span class="sk-pill">数据分析</span>
+          <span class="sk-pill">Excel / Xmind</span><span class="sk-pill">跨部门协作</span><span class="sk-pill">英语读写</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     §3  CAREER – HORIZONTAL MAP
+══════════════════════════════════════════ -->
+<section id="s-career">
+  <div class="sec-wrap">
+    <div class="sec-head rv">
+      <span style="font-size:32px">🗺️</span>
+      <h2>职场<span>足迹</span></h2>
+      <div class="sec-line"></div>
+    </div>
+    <p class="career-hint rv">✨ 点击每一站，点亮我的职场光芒 · 四座城市，四次探索 · 一步一个脚印，见证小小成长 🌱</p>
+
+    <div class="career-scroll rv">
+      <div class="career-map" id="careerMap">
+
+        <!-- Rising shooting-star SVG path -->
+        <svg class="career-path-svg" viewBox="0 0 100 180" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <!-- horizontal color gradient for path -->
+            <linearGradient id="cpGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#5B7EBB"/>
+              <stop offset="33%"  stop-color="#5AB09A"/>
+              <stop offset="66%"  stop-color="#9B65CC"/>
+              <stop offset="100%" stop-color="#F5A820"/>
+            </linearGradient>
+            <!-- radial glow for shooting star head -->
+            <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset="60%"  stop-color="#EBD9FF" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#C8A8E9" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Shadow / glow copy of path (depth effect) -->
+          <path id="riseGlow"
+            d="M 10,145 C 22,120 32,100 45,82 C 57,65 68,48 90,28"
+            fill="none" stroke="url(#cpGrad)" stroke-width="3"
+            stroke-linecap="round" opacity="0.12"/>
+
+          <!-- Main upward-rising path -->
+          <path id="risePath"
+            d="M 10,145 C 22,120 32,100 45,82 C 57,65 68,48 90,28"
+            fill="none" stroke="url(#cpGrad)" stroke-width="0.9"
+            stroke-linecap="round" opacity="0.82"/>
+
+          <!-- ── Shooting star 1 ── white head + tail -->
+          <g opacity="0">
+            <animateTransform attributeName="transform" type="translate"
+              values="0 0" dur="0s" begin="0s"/>
+          </g>
+          <circle r="2.2" fill="url(#starGlow)">
+            <animateMotion dur="2.8s" repeatCount="indefinite" rotate="auto" begin="0s">
+              <mpath href="#risePath"/>
+            </animateMotion>
+            <animate attributeName="opacity" values="0;1;1;0.8;0" keyTimes="0;0.05;0.5;0.9;1" dur="2.8s" repeatCount="indefinite" begin="0s"/>
+            <animate attributeName="r" values="0.5;2.2;1.8;1;0.2" keyTimes="0;0.05;0.4;0.8;1" dur="2.8s" repeatCount="indefinite" begin="0s"/>
+          </circle>
+
+          <!-- ── Shooting star 2 (delayed, smaller, gold) ── -->
+          <circle r="1.4" fill="#FFD580">
+            <animateMotion dur="2.8s" repeatCount="indefinite" rotate="auto" begin="1.4s">
+              <mpath href="#risePath"/>
+            </animateMotion>
+            <animate attributeName="opacity" values="0;0.9;0.85;0" keyTimes="0;0.06;0.85;1" dur="2.8s" repeatCount="indefinite" begin="1.4s"/>
+            <animate attributeName="r" values="0.3;1.6;1.2;0.2" keyTimes="0;0.06;0.7;1" dur="2.8s" repeatCount="indefinite" begin="1.4s"/>
+          </circle>
+
+          <!-- ── Tail sparkle dots trailing star 1 ── -->
+          <circle r="0.8" fill="#C8A8E9" opacity="0">
+            <animateMotion dur="2.8s" repeatCount="indefinite" rotate="auto" begin="0.18s">
+              <mpath href="#risePath"/>
+            </animateMotion>
+            <animate attributeName="opacity" values="0;0.7;0.5;0" keyTimes="0;0.08;0.6;1" dur="2.8s" repeatCount="indefinite" begin="0.18s"/>
+          </circle>
+          <circle r="0.5" fill="#A8D8C8" opacity="0">
+            <animateMotion dur="2.8s" repeatCount="indefinite" rotate="auto" begin="0.32s">
+              <mpath href="#risePath"/>
+            </animateMotion>
+            <animate attributeName="opacity" values="0;0.5;0.3;0" keyTimes="0;0.1;0.5;1" dur="2.8s" repeatCount="indefinite" begin="0.32s"/>
+          </circle>
+
+          <!-- ── Static star sparks at milestone points ── -->
+          <text x="10"  y="142" font-size="5"   fill="#7B9ED0" text-anchor="middle" opacity="0.75">✦</text>
+          <text x="36"  y="98"  font-size="4.5" fill="#5AB09A" text-anchor="middle" opacity="0.8">★</text>
+          <text x="62"  y="60"  font-size="4.5" fill="#B88ADE" text-anchor="middle" opacity="0.8">★</text>
+          <text x="90"  y="25"  font-size="6"   fill="#F5A820" text-anchor="middle" opacity="0.9">⭐</text>
+        </svg>
+
+        <!-- LV1 埃德博 -->
+        <div class="c-node-h active" data-id="c1" onclick="selectCareer(this)">
+          <div class="c-planet lv1">🚀<span class="lv-badge">⭐</span></div>
+          <div class="c-arrow">›</div>
+          <div class="node-label">
+            <div class="node-co">青岛埃德博</div>
+            <div><span class="node-role-badge">教师</span></div>
+            <div class="node-period">2017—2018</div>
+          </div>
+        </div>
+
+        <!-- LV2 帕皮 -->
+        <div class="c-node-h" data-id="c2" onclick="selectCareer(this)">
+          <div class="c-planet lv2">🌱<span class="lv-badge">⭐⭐</span></div>
+          <div class="c-arrow">›</div>
+          <div class="node-label">
+            <div class="node-co">北京帕皮</div>
+            <div><span class="node-role-badge">教学教研</span></div>
+            <div class="node-period">2018—2019</div>
+          </div>
+        </div>
+
+        <!-- LV3 点猫 -->
+        <div class="c-node-h" data-id="c3" onclick="selectCareer(this)">
+          <div class="c-planet lv3">🐱<span class="lv-badge">⭐⭐⭐</span></div>
+          <div class="c-arrow">›</div>
+          <div class="node-label">
+            <div class="node-co">深圳点猫</div>
+            <div><span class="node-role-badge">高级教研</span></div>
+            <div class="node-period">2019—2023</div>
+          </div>
+        </div>
+
+        <!-- LV4 帕拉卡 -->
+        <div class="c-node-h" data-id="c4" onclick="selectCareer(this)">
+          <div class="c-planet lv4">🌟<span class="lv-badge">⭐⭐⭐⭐</span></div>
+          <div class="node-label">
+            <div class="node-co">深圳帕拉卡</div>
+            <div><span class="node-role-badge" style="background:var(--gd-l);color:#8B6000">教研主管</span></div>
+            <div class="node-period">2023—至今</div>
+          </div>
+        </div>
+
+      </div><!-- /career-map -->
+    </div><!-- /career-scroll -->
+
+    <!-- Detail card -->
+    <div class="career-detail rv" id="careerDetail" style="--arrow-left:12.5%">
+      <!-- filled by JS -->
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     §4  PROJECTS
+══════════════════════════════════════════ -->
+<section id="s-projects">
+  <div class="sec-wrap">
+    <div class="sec-head rv">
+      <span style="font-size:32px">🏛️</span>
+      <h2>作品<span>集锦</span></h2>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- 01 Steam -->
+      <div class="proj-card rv" style="transition-delay:.05s">
+        <div class="proj-card-inner">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-steam-1.png','Steam机器人工程课程')">
+            <img src="项目截图/project-steam-1.png" alt="Steam机器人课程" class="proj-img" loading="lazy">
+            <span class="proj-num"><span class="proj-num-icon">🤖</span>EXHIBIT 01</span>
+            <span class="zoom-hint">🔍 点击放大</span>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">🤖 Steam机器人工程课程</div>
+            <p class="proj-desc">将机器人搭建与编程融合为项目制学习体验，覆盖 Scratch、Wedo、EV3 等多平台</p>
+            <span class="proj-tag">📁 课件设计</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 AI课件 -->
+      <div class="proj-card rv" style="transition-delay:.1s">
+        <div class="proj-card-inner">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-multippt-1.png','中小学AI多模态数字课件')">
+            <img src="项目截图/project-multippt-1.png" alt="中小学AI多模态数字课件"
+                 class="proj-img" loading="lazy"
+                 onerror="this.parentElement.style.background='linear-gradient(135deg,#6B4EA8,#A8D8C8)';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div style=\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:6px\'><span style=\'font-size:38px\'>🧠</span><span style=\'color:rgba(255,255,255,.7);font-size:11px\'>图片待补充</span></div>')">
+            <span class="proj-num"><span class="proj-num-icon">🧠</span>EXHIBIT 02</span>
+            <span class="zoom-hint">🔍 点击放大</span>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">🧠 中小学AI多模态数字课件</div>
+            <p class="proj-desc">融合图文、音视频与智能问答的沉浸式学习体验，支持多终端交互</p>
+            <div class="proj-links">
+              <a href="https://irislonnewolf-bot.github.io/ai-courseware/" target="_blank" rel="noopener" class="pj-link">🔗 在线体验</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 教材 -->
+      <div class="proj-card rv" style="transition-delay:.15s">
+        <div class="proj-card-inner">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-textbook-1.png','省级信息科技教材编写')">
+            <img src="项目截图/project-textbook-1.png" alt="省级教材" class="proj-img" loading="lazy">
+            <span class="proj-num"><span class="proj-num-icon">📘</span>EXHIBIT 03</span>
+            <span class="zoom-hint">🔍 点击放大</span>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">📘 省级信息科技教材编写</div>
+            <p class="proj-desc">参与广东、河北、广西、河南等省份电教馆地方教材撰稿与审校，合编 10 册+</p>
+            <span class="proj-tag">📁 定稿教材</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 绿米 -->
+      <div class="proj-card rv" style="transition-delay:.2s">
+        <div class="proj-card-inner">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-lvmi-1.png','绿米智能家居硬件课程')">
+            <img src="项目截图/project-lvmi-1.png" alt="绿米课程" class="proj-img" loading="lazy">
+            <span class="proj-num"><span class="proj-num-icon">🏠</span>EXHIBIT 04</span>
+            <span class="zoom-hint">🔍 点击放大</span>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">🏠 绿米智能家居硬件课程</div>
+            <p class="proj-desc">将 IoT 传感器技术与智能家居场景融入 K12 课程，配套完整教师手册与教学视频</p>
+            <span class="proj-tag">📁 教师手册</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 AIGC工作流 -->
+      <div class="proj-card rv" style="transition-delay:.25s">
+        <div class="proj-card-inner">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-aigc-workflow-1.png','AIGC内容生产工作流')">
+            <img src="项目截图/project-aigc-workflow-1.png" alt="AIGC工作流" class="proj-img" loading="lazy">
+            <span class="proj-num"><span class="proj-num-icon">⚡</span>EXHIBIT 05</span>
+            <span class="zoom-hint">🔍 点击放大</span>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">⚡ AIGC内容生产工作流</div>
+            <p class="proj-desc">构建基于大语言模型的教学动画脚本生产流水线，团队制课效率提升约 33%</p>
+            <span class="proj-tag">📁 工作流设计</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 课程产品框架设计 -->
+      <div class="proj-card rv" style="transition-delay:.3s">
+        <div class="proj-card-inner">
+          <div class="proj-img-wrap" onclick="openLightbox('项目截图/project-framework-1.png','课程产品框架设计')">
+            <img src="项目截图/project-framework-1.png" alt="课程产品框架设计" class="proj-img" loading="lazy">
+            <span class="proj-num"><span class="proj-num-icon">🗂️</span>EXHIBIT 06</span>
+            <span class="zoom-hint">🔍 点击放大</span>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">🗂️ 课程产品框架设计</div>
+            <p class="proj-desc">系统化课程产品架构规划，从学习目标到评估体系的全链条框架设计与落地</p>
+            <span class="proj-tag">📁 产品框架</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /proj-grid -->
+
+    <!-- AIGC Image Carousel -->
+    <div class="aigc-banner rv" style="transition-delay:.38s;margin-top:44px">
+      <div class="aigc-banner-title">
+        🖼️ AIGC 图像故事会
+        <span class="aigc-banner-sub">· 用 AI 探索视觉边界</span>
+      </div>
+      <div class="car-viewport">
+        <div class="car-track" id="carTrack"></div>
+      </div>
+      <div class="car-controls">
+        <button class="car-btn" onclick="carMove(-1)">←</button>
+        <div class="car-dots-wrap" id="carDots"></div>
+        <button class="car-btn" onclick="carMove(1)">→</button>
+      </div>
+    </div>
+
+    <!-- AIGC Video Cards -->
+    <div class="aigc-banner rv" style="transition-delay:.46s">
+      <div class="aigc-banner-title">
+        🎬 AIGC 视频故事集
+        <span class="aigc-banner-sub">· 点击跳转小红书观看</span>
+      </div>
+      <div class="video-cards">
+        <a href="http://xhslink.com/o/A5UKFhHquE8" target="_blank" rel="noopener" class="video-card">
+          <span class="vc-icon">🎨</span>
+          <div class="vc-info">
+            <div class="vc-title">AIGC 动画创作</div>
+            <div class="vc-desc">运用 Sora、Veo、Seedance 等工具<br>独立生成的 AI 动画作品</div>
+          </div>
+          <span class="vc-arrow">→</span>
+        </a>
+        <a href="http://xhslink.com/o/rKPJzYX1Xz" target="_blank" rel="noopener" class="video-card">
+          <span class="vc-icon">🎞️</span>
+          <div class="vc-info">
+            <div class="vc-title">影视混剪</div>
+            <div class="vc-desc">结合 AIGC 与剪映的创意影视混剪<br>探索 AI 辅助叙事的表达边界</div>
+          </div>
+          <span class="vc-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     §5  LIFE
+══════════════════════════════════════════ -->
+<section id="s-life">
+  <div class="sec-wrap">
+    <div class="sec-head rv">
+      <span style="font-size:32px">📷</span>
+      <h2>生活<span>侧写</span></h2>
+      <div class="sec-line"></div>
+    </div>
+    <p class="polar-hint rv">镜头后的她 · 热爱探索、充满好奇<br>
+      <span style="font-size:12px">Hover 一下，让拍立得飞起来 ✨</span></p>
+    <div class="polar-stage rv">
+      <div class="polar"><img src="照片/personal1.jpg" alt="探索中的她" loading="lazy"><div class="polar-cap">探索中的她 🌍</div></div>
+      <div class="polar"><img src="照片/personal2.jpg" alt="创作时刻" loading="lazy"><div class="polar-cap">创作时刻 ✨</div></div>
+      <div class="polar"><img src="照片/personal3.jpg" alt="与自然对话" loading="lazy"><div class="polar-cap">与自然对话 🌿</div></div>
+    </div>
+    <div class="life-quote rv">"用科技点亮童心，以创意丈量未来 🚀"</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     §6  CONTACT
+══════════════════════════════════════════ -->
+<section id="s-contact">
+  <canvas id="ctCanvas"></canvas>
+  <div class="ct-body">
+    <span class="ct-rocket">🚀</span>
+    <h2 class="ct-title">期待与你合作</h2>
+    <p class="ct-sub">祝看到这句话的你每天开心！欢迎联系~</p>
+    <div class="ct-cards">
+      <a href="tel:17881404491" class="ct-card">
+        <span class="ct-ci">📱</span><span class="ct-label">一键拨号</span>
+        <span class="ct-val">178-8140-4491</span><span class="ct-hint">点击直接拨号</span>
+      </a>
+      <div class="ct-card" onclick="copyEmail()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')copyEmail()">
+        <span class="ct-ci">✉️</span><span class="ct-label">发送邮件</span>
+        <span class="ct-val" style="font-size:12.5px">lonnewolf@foxmail.com</span><span class="ct-hint">点击复制邮箱</span>
+      </div>
+      <div class="ct-card" style="cursor:default">
+        <span class="ct-ci">📍</span><span class="ct-label">所在城市</span>
+        <span class="ct-val">深圳市宝安区</span><span class="ct-hint">曲阜师范大学 · 计算机科学</span>
+      </div>
+    </div>
+    <div class="ct-footer">杨云虹 · AI 教育内容产品专家 · 2026</div>
+  </div>
+</section>
+
+<script>
+/* ══ STAR CANVAS ══ */
+function mkStars(id) {
+  const cv = document.getElementById(id); if (!cv) return;
+  const ctx = cv.getContext('2d'); let W, H;
+  function resize(){ W=cv.width=cv.offsetWidth||cv.parentElement.offsetWidth; H=cv.height=cv.offsetHeight||cv.parentElement.offsetHeight; }
+  resize(); try{new ResizeObserver(resize).observe(cv.parentElement)}catch(e){}
+  window.addEventListener('resize',resize,{passive:true});
+  const stars=Array.from({length:160},()=>({x:Math.random()*3000,y:Math.random()*3000,r:Math.random()*1.5+.3,a:Math.random()*.7+.2,da:(Math.random()*.008+.003)*(Math.random()<.5?1:-1),vy:Math.random()*.07+.02}));
+  const shoots=[]; setInterval(()=>{if(shoots.length<4)shoots.push({x:Math.random()*W,y:Math.random()*H*.45,vx:Math.random()*5+3,vy:Math.random()*2.5+1,life:0,maxLife:52})},2400);
+  (function loop(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{s.a+=s.da;if(s.a>=.95){s.a=.95;s.da=-Math.abs(s.da);}if(s.a<=.1){s.a=.1;s.da=Math.abs(s.da);}s.y-=s.vy;if(s.y<0){s.y=H;s.x=Math.random()*W;}ctx.beginPath();ctx.arc(s.x%W,s.y,s.r,0,6.28);ctx.fillStyle=`rgba(255,255,255,${s.a.toFixed(2)})`;ctx.fill();});
+    for(let i=shoots.length-1;i>=0;i--){const s=shoots[i];const op=Math.max(0,1-s.life/s.maxLife);const g=ctx.createLinearGradient(s.x,s.y,s.x-s.vx*9,s.y-s.vy*9);g.addColorStop(0,`rgba(200,168,233,${op})`);g.addColorStop(1,'rgba(200,168,233,0)');ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x-s.vx*9,s.y-s.vy*9);ctx.strokeStyle=g;ctx.lineWidth=1.6;ctx.stroke();s.x+=s.vx;s.y+=s.vy;s.life++;if(s.life>=s.maxLife)shoots.splice(i,1);}
+    [[W*.25,H*.42,200,'200,168,233',.075],[W*.72,H*.63,130,'168,216,200',.065]].forEach(([x,y,r,rgb,a])=>{const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);});
+    requestAnimationFrame(loop);
+  })();
+}
+mkStars('cvCanvas'); mkStars('ctCanvas');
+
+/* ══ SCROLL REVEAL ══ */
+const ioRv=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>ioRv.observe(el));
+
+/* ══ TOP NAV scroll-aware ══ */
+const topNav=document.getElementById('topNav');
+const secIds=['s-cover','s-skills','s-career','s-projects','s-life','s-contact'];
+const tnBtns=document.querySelectorAll('.tn-btn');
+const ndDots=document.querySelectorAll('.nd');
+
+function scrollSec(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
+
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  // nav theme
+  topNav.classList.toggle('light', y > window.innerHeight * .85);
+  // active nav btn & dot
+  const mid=y+window.innerHeight*.5;
+  secIds.forEach((id,i)=>{
+    const el=document.getElementById(id); if(!el)return;
+    if(mid>=el.offsetTop && mid<el.offsetTop+el.offsetHeight){
+      tnBtns.forEach(b=>b.classList.remove('active')); tnBtns[i]?.classList.add('active');
+      ndDots.forEach(d=>d.classList.remove('on')); ndDots[i]?.classList.add('on');
+    }
+  });
+},{passive:true});
+
+ndDots.forEach((d,i)=>d.addEventListener('click',()=>scrollSec(secIds[i])));
+
+/* ══ BGM ══ */
+const bgm=document.getElementById('bgm');
+let bgmPlaying=false;
+function toggleBGM(btn){
+  if(bgmPlaying){ bgm.pause(); bgmPlaying=false; document.getElementById('bgmLabel').textContent='播放BGM'; document.getElementById('bgmNote').classList.remove('play'); }
+  else{ bgm.play().then(()=>{ bgmPlaying=true; document.getElementById('bgmLabel').textContent='暂停BGM'; document.getElementById('bgmNote').classList.add('play'); }).catch(()=>showToast('浏览器需要用户操作后才能播放音频')); }
+}
+bgm.addEventListener('ended',()=>{ bgmPlaying=false; document.getElementById('bgmLabel').textContent='播放BGM'; document.getElementById('bgmNote').classList.remove('play'); });
+
+/* ══ LIGHTBOX ══ */
+const lb=document.getElementById('lightbox');
+const lbImg=document.getElementById('lb-img');
+function openLightbox(src,alt){
+  lbImg.src=src; lbImg.alt=alt||''; lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeLightbox(); });
+lbImg.addEventListener('click',e=>e.stopPropagation());
+
+/* ══ CAREER DATA ══ */
+const careerData={
+  c1:{co:'青岛市埃德博科技有限公司',role:'教师',period:'2017.03 — 2018.07',arrowLeft:'12.5%',items:['负责合作校 2–8 年级机器人课程授课，含机器人搭建、Scratch、Wedo、EV3 编程等','通过 LDD 等软件建模，编撰模型搭建手册','协调教务小组成员，推进课程实施']},
+  c2:{co:'北京市帕皮教育科技有限公司',role:'教学教研',period:'2018.09 — 2019.10',arrowLeft:'37.5%',items:['负责 3–6 岁儿童科学课程、学能思维课程及机器人硬件课程的教研教学','Scratch 创意编程课程教研，撰写课件、教案及教学视频录制','跟进学员及家长满意度，进行课程优化迭代及用户池维护；对接加盟机构教师培训']},
+  c3:{co:'深圳市点猫科技有限公司',role:'高级教研',period:'2019.11 — 2023.05',arrowLeft:'62.5%',items:['主导/独立开发 Steam 机器人、绿米智能家居、图形化赛事备考等多套课程产品','参与广东、河北、广西、河南等省份电教馆地方信息科技教材编写','完成 NOC 图形化编程赛题库 2k+ 道题目建设；支持省市级竞赛 20 余场次','开展教学效果数据监测与分析，驱动教学内容与产品功能迭代优化']},
+  c4:{co:'深圳市帕拉卡科技有限公司',role:'教研主管',period:'2023.06 — 2026.01',arrowLeft:'87.5%',items:['主导青少年 AI 素养课程体系规划，搭建分层课程逻辑与教学目标框架','统筹推进多类型课程研发：3D动画编程、智慧农场赛事课程、中小学人工智能课程等','构建基于 AI 工具的课程资源生产模板，团队人均制课效率提升约 33%','协同运营、市场、产品多部门，参与省市级赛事支持、深圳人大附中 AI 课程共建']}
+};
+
+function renderCareerDetail(id){
+  const d=careerData[id]; if(!d)return;
+  const det=document.getElementById('careerDetail');
+  det.style.setProperty('--arrow-left',d.arrowLeft);
+  det.innerHTML=`<div class="cd-head"><span class="cd-co">${d.co}</span><span class="cd-role">${d.role}</span><span class="cd-period">📅 ${d.period}</span></div><div class="cd-items">${d.items.map(t=>`<div class="cd-item">${t}</div>`).join('')}</div>`;
+  det.classList.add('in');
+}
+function selectCareer(node){
+  document.querySelectorAll('.c-node-h').forEach(n=>n.classList.remove('active'));
+  node.classList.add('active');
+  renderCareerDetail(node.dataset.id);
+}
+// init with c1
+renderCareerDetail('c1');
+
+/* ══ AIGC CAROUSEL ══ */
+const CAR_TOTAL=12, CAR_W=204, CAR_PAGE=4;
+const PAGES=Math.ceil(CAR_TOTAL/CAR_PAGE);
+let carIdx=0, carTimer=null;
+const carTrack=document.getElementById('carTrack');
+const carDotsEl=document.getElementById('carDots');
+for(let i=1;i<=CAR_TOTAL;i++){const d=document.createElement('div');d.className='car-item';d.innerHTML=`<img src="AIGCPHOTO/${i}.jpg" alt="AIGC ${i}" loading="lazy">`;carTrack.appendChild(d);}
+for(let i=0;i<PAGES;i++){const d=document.createElement('div');d.className='car-dot'+(i===0?' on':'');d.addEventListener('click',()=>carGoPage(i));carDotsEl.appendChild(d);}
+function carGoPage(p){carIdx=Math.min(p*CAR_PAGE,CAR_TOTAL-CAR_PAGE);carTrack.style.transform=`translateX(-${carIdx*CAR_W}px)`;document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('on',i===p));}
+function carMove(dir){clearInterval(carTimer);let p=Math.round(carIdx/CAR_PAGE)+dir;if(p>=PAGES)p=0;if(p<0)p=PAGES-1;carGoPage(p);startCarTimer();}
+function startCarTimer(){carTimer=setInterval(()=>{let p=Math.round(carIdx/CAR_PAGE)+1;if(p>=PAGES)p=0;carGoPage(p);},2800);}
+startCarTimer();
+
+/* ══ COPY EMAIL ══ */
+function copyEmail(){const e='lonnewolf@foxmail.com';if(navigator.clipboard){navigator.clipboard.writeText(e).then(()=>showToast('✅ 邮箱已复制！')).catch(()=>showToast('邮箱：'+e));}else{const t=document.createElement('textarea');t.value=e;t.style.cssText='position:fixed;opacity:0';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('✅ 邮箱已复制！');}}
+
+/* ══ TOAST ══ */
+let toastTimer=null;
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2800);}
+</script>
+</body>
+</html>
